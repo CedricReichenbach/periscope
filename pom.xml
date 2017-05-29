@@ -14,6 +14,7 @@
 
   <modules>
     <module>vaadin-periscope-addon</module>
+    <module>vaadin-periscope-demo</module>
   </modules>
 
   <profiles>

@@ -1,0 +1,15 @@
+target
+overlays
+*.log
+*.iml
+*.ipr
+*.iws
+.idea
+.project
+.classpath
+.settings
+.DS_Store
+rebel.xml
+
+**/VAADIN/themes/vaadin-periscope/*.css
+

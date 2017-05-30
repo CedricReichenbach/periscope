@@ -176,6 +176,18 @@
         </executions>
       </plugin>
 
+      <plugin>
+        <groupId>com.vaadin</groupId>
+        <artifactId>vaadin-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile-theme</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
       <!-- Testing -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

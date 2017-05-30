@@ -12,4 +12,4 @@ overlays
 rebel.xml
 *.scss.cache
 
-**/VAADIN/themes/vaadin-periscope/*.css
+**/VAADIN/themes/**/*.css

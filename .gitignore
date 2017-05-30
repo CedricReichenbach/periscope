@@ -10,6 +10,6 @@ overlays
 .settings
 .DS_Store
 rebel.xml
+*.scss.cache
 
 **/VAADIN/themes/vaadin-periscope/*.css
-

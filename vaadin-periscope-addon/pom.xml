@@ -81,6 +81,17 @@
       <version>3.4</version>
     </dependency>
 
+    <dependency>
+      <groupId>info.magnolia</groupId>
+      <artifactId>vaadin-browser-microphone-recorder</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>info.magnolia</groupId>
+      <artifactId>google-speech-recognition-service</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
     <!-- This can be replaced with TestNG or some other test framework supported by the surefire plugin -->
     <dependency>
       <groupId>junit</groupId>

@@ -39,7 +39,6 @@ import info.magnolia.vaadin.periscope.result.Result;
 import info.magnolia.vaadin.periscope.result.ResultSupplier;
 import info.magnolia.vaadin.speech.AudioRecorder;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -165,14 +164,11 @@ public class Periscope extends VerticalLayout {
         final GoogleSpeechRecognitionService googleSpeechRecognitionService = new GoogleSpeechRecognitionService();
 
         audioRecorder.addValueChangeListener((AudioRecorder.ValueChangeListener) wavBinary -> {
-            try {
-                final String speech = googleSpeechRecognitionService.recognise(wavBinary);
+            Optional<String> recognisedAudio = googleSpeechRecognitionService.recognise(wavBinary);
+            if (recognisedAudio.isPresent()) {
+                String speech = recognisedAudio.get();
                 input.setValue(speech);
                 System.out.println("GREAT SUCCESS, USER SAID: " + speech);
-                // TODO
-            } catch (IOException e) {
-                System.err.println("Failed to recognize a piece of recorded audio");
-                e.printStackTrace();
             }
         });
 

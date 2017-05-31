@@ -28,12 +28,12 @@ public class BrowserSpeechRecognizer extends AbstractJavaScriptComponent impleme
     }
 
     @Override
-    public void addListener(Consumer<String> listener) {
+    public void addSpeechResultListener(Consumer<String> listener) {
         this.listeners.add(listener);
     }
 
     @Override
-    public void removeListener(Consumer<String> listener) {
+    public void removeSpeechResultListener(Consumer<String> listener) {
         this.listeners.remove(listener);
     }
 }

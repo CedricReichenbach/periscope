@@ -42,12 +42,12 @@ public class GoogleSpeechRecognizer extends AbstractComponent implements SpeechR
     }
 
     @Override
-    public void addListener(Consumer<String> listener) {
+    public void addSpeechResultListener(Consumer<String> listener) {
         listeners.add(listener);
     }
 
     @Override
-    public void removeListener(Consumer<String> listener) {
+    public void removeSpeechResultListener(Consumer<String> listener) {
         listeners.remove(listener);
     }
 }

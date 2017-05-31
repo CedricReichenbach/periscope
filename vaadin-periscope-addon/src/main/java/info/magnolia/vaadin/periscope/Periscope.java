@@ -44,8 +44,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-import com.vaadin.event.FieldEvents;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.event.ShortcutListener;
 import com.vaadin.ui.AbstractTextField;
@@ -88,7 +88,7 @@ public class Periscope extends VerticalLayout {
         resultList = new ResultList();
         this.addComponent(resultList.getLayout());
 
-        input.addTextChangeListener(this::inputChanged);
+        input.addTextChangeListener(event -> consumeQuery(event.getText(), false));
         input.setTextChangeEventMode(AbstractTextField.TextChangeEventMode.EAGER);
 
         input.addShortcutListener(createInputShortcut(ShortcutAction.KeyCode.ARROW_DOWN, () -> resultList.moveSelector(1)));
@@ -104,20 +104,26 @@ public class Periscope extends VerticalLayout {
         this.addComponent(createSpeechButton());
     }
 
-    private void inputChanged(FieldEvents.TextChangeEvent event) {
+    private void consumeQuery(final String query, final boolean autoExecuteFirst) {
         // FIXME: Properly use push instead
         getUI().setPollInterval(500);
 
         runningAsyncSearches.forEach(search -> search.cancel(true));
 
-        final String query = event.getText();
-
         resultList.clear();
 
         for (final ResultSupplier supplier : resultSuppliers) {
             List<Result> results = supplier.search(query);
+
+            if (autoExecuteFirst && !results.isEmpty()) {
+                results.get(0).getAction().run();
+                return;
+            }
+
             resultList.appendResults(supplier.getTitle(), results);
         }
+
+        final AtomicBoolean autoExecuteDone = new AtomicBoolean(false);
         asyncResultSuppliers.forEach(supplier -> {
             resultList.showLoadingIcon();
 
@@ -125,11 +131,20 @@ public class Periscope extends VerticalLayout {
             final CompletableFuture<List<Result>> search = supplier.search(query);
             runningAsyncSearches.add(search);
             search.thenAccept(results -> {
-                        resultList.appendResults(supplier.getTitle(), results);
                         resultList.hideLoadingIcon();
-
                         runningAsyncSearches.remove(search);
 
+                        if (autoExecuteFirst && autoExecuteDone.get()) {
+                            return;
+                        }
+
+                        if (autoExecuteFirst && !results.isEmpty()) {
+                            results.get(0).getAction().run();
+                            autoExecuteDone.set(true);
+                            return;
+                        }
+
+                        resultList.appendResults(supplier.getTitle(), results);
                         getUI().push();
                     }
             );
@@ -150,7 +165,10 @@ public class Periscope extends VerticalLayout {
     }
 
     private Component createSpeechButton() {
-        speechRecognizer.addListener(input::setValue);
+        speechRecognizer.addSpeechResultListener(transcript -> {
+            input.setValue(transcript);
+            this.consumeQuery(transcript, true);
+        });
 
         final Button startStopButton = new Button("Speech");
         startStopButton.addClickListener((Button.ClickListener) event -> {

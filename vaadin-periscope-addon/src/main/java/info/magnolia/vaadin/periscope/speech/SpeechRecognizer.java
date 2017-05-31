@@ -7,7 +7,7 @@ import com.vaadin.ui.Component;
 public interface SpeechRecognizer extends Component {
     void record();
 
-    void addListener(Consumer<String> listener);
+    void addSpeechResultListener(Consumer<String> listener);
 
-    void removeListener(Consumer<String> listener);
+    void removeSpeechResultListener(Consumer<String> listener);
 }

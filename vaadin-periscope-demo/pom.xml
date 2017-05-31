@@ -19,6 +19,7 @@
 		<vaadin.version>7.7.7</vaadin.version>
 		<vaadin.plugin.version>7.7.7</vaadin.plugin.version>
 		<jetty.plugin.version>9.3.9.v20160517</jetty.plugin.version>
+    <resteasyVersion>3.0.19.Final</resteasyVersion>
 	</properties>
 
     <!--
@@ -95,6 +96,17 @@
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.0.1</version>
 			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jackson-provider</artifactId>
+			<version>${resteasyVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-client</artifactId>
+			<version>${resteasyVersion}</version>
 		</dependency>
 	</dependencies>
 

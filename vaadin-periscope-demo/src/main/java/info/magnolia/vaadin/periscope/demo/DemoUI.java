@@ -2,6 +2,7 @@ package info.magnolia.vaadin.periscope.demo;
 
 import info.magnolia.vaadin.periscope.Periscope;
 import info.magnolia.vaadin.periscope.demo.suppliers.WebsiteSupplier;
+import info.magnolia.vaadin.periscope.demo.suppliers.WikipediaSupplier;
 
 import java.util.Collections;
 
@@ -30,7 +31,7 @@ public class DemoUI extends UI {
     protected void init(VaadinRequest request) {
 
         // Initialize our new UI component
-        final Periscope component = new Periscope(Collections.singleton(new WebsiteSupplier()), Collections.emptyList());
+        final Periscope component = new Periscope(Collections.singleton(new WebsiteSupplier()), Collections.singleton(new WikipediaSupplier()));
 
         // Show it in the middle of the screen
         final VerticalLayout layout = new VerticalLayout();

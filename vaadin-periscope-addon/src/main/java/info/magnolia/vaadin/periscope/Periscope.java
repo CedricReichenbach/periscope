@@ -33,18 +33,17 @@
  */
 package info.magnolia.vaadin.periscope;
 
-import info.magnolia.speech.GoogleSpeechRecognitionService;
 import info.magnolia.vaadin.periscope.result.AsyncResultSupplier;
 import info.magnolia.vaadin.periscope.result.Result;
 import info.magnolia.vaadin.periscope.result.ResultSupplier;
-import info.magnolia.vaadin.speech.AudioRecorder;
+import info.magnolia.vaadin.periscope.speech.BrowserSpeechRecognizer;
+import info.magnolia.vaadin.periscope.speech.SpeechRecognizer;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.vaadin.event.FieldEvents;
 import com.vaadin.event.ShortcutAction;
@@ -145,33 +144,16 @@ public class Periscope extends VerticalLayout {
     }
 
     private Component createSpeechButton() {
-        final AudioRecorder audioRecorder = new AudioRecorder();
+        // TODO: Make configurable
+        final SpeechRecognizer speechRecognizer = new BrowserSpeechRecognizer();
 
-        final Button startStopButton = new Button("Start");
-        final AtomicBoolean isRecording = new AtomicBoolean(false);
+        speechRecognizer.addListener(input::setValue);
 
+        final Button startStopButton = new Button("Speech");
         startStopButton.addClickListener((Button.ClickListener) event -> {
-            if (isRecording.get()) {
-                startStopButton.setCaption("Start");
-                audioRecorder.stop();
-            } else {
-                startStopButton.setCaption("Stop");
-                audioRecorder.record();
-            }
-            isRecording.set(!isRecording.get());
+            speechRecognizer.record();
         });
 
-        final GoogleSpeechRecognitionService googleSpeechRecognitionService = new GoogleSpeechRecognitionService();
-
-        audioRecorder.addValueChangeListener((AudioRecorder.ValueChangeListener) wavBinary -> {
-            Optional<String> recognisedAudio = googleSpeechRecognitionService.recognise(wavBinary);
-            if (recognisedAudio.isPresent()) {
-                String speech = recognisedAudio.get();
-                input.setValue(speech);
-                System.out.println("GREAT SUCCESS, USER SAID: " + speech);
-            }
-        });
-
-        return new VerticalLayout(startStopButton, audioRecorder);
+        return new VerticalLayout(startStopButton, speechRecognizer);
     }
 }

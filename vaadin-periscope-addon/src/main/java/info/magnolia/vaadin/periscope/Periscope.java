@@ -65,12 +65,18 @@ public class Periscope extends VerticalLayout {
 
     private final TextField input;
     private final ResultList resultList;
+    private final SpeechRecognizer speechRecognizer;
 
     public Periscope(final Collection<ResultSupplier> resultSuppliers, final Collection<AsyncResultSupplier> asyncResultSuppliers) {
+        this(resultSuppliers, asyncResultSuppliers, new BrowserSpeechRecognizer());
+    }
+
+    public Periscope(final Collection<ResultSupplier> resultSuppliers, final Collection<AsyncResultSupplier> asyncResultSuppliers, final SpeechRecognizer speechRecognizer) {
         super();
 
         this.resultSuppliers = resultSuppliers;
         this.asyncResultSuppliers = asyncResultSuppliers;
+        this.speechRecognizer = speechRecognizer;
 
         this.addStyleName("periscope");
 
@@ -144,9 +150,6 @@ public class Periscope extends VerticalLayout {
     }
 
     private Component createSpeechButton() {
-        // TODO: Make configurable
-        final SpeechRecognizer speechRecognizer = new BrowserSpeechRecognizer();
-
         speechRecognizer.addListener(input::setValue);
 
         final Button startStopButton = new Button("Speech");

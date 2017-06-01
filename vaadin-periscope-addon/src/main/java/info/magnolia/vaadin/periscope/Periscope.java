@@ -46,6 +46,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.vaadin.annotations.StyleSheet;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.event.ShortcutListener;
 import com.vaadin.ui.AbstractTextField;
@@ -57,6 +58,7 @@ import com.vaadin.ui.VerticalLayout;
 /**
  * Periscope Vaadin component, which contains a search bar and shows live results while typing ahead.
  */
+@StyleSheet("vaadin://addons/periscope/css/ionicons.min.css")
 public class Periscope extends VerticalLayout {
 
     private final Collection<ResultSupplier> resultSuppliers;
@@ -170,7 +172,10 @@ public class Periscope extends VerticalLayout {
             this.consumeQuery(transcript, true);
         });
 
-        final Button startStopButton = new Button("Speech");
+        final Button startStopButton = new Button();
+        startStopButton.addStyleName("record-button");
+        startStopButton.setCaptionAsHtml(true);
+        startStopButton.setCaption("<span class=\"ion-mic-a\"></span>");
         startStopButton.addClickListener((Button.ClickListener) event -> {
             speechRecognizer.record();
         });

@@ -9,6 +9,7 @@
 
 @mixin periscope-base {
   $light-gray: #ddd;
+  $lighter-gray: lighten(#ddd, 5%);
   $middle-gray: #bbb;
   $dark-gray: #666;
   $light-blue: #cef;
@@ -23,7 +24,11 @@
     }
 
     .supplier-heading {
-      padding: 0.5ex;
+      padding: 0.5ex 1ex;
+      font-weight: 400;
+      font-size: 90%;
+      color: $dark-gray;
+      background-color: $lighter-gray;
     }
 
     .result-entry {

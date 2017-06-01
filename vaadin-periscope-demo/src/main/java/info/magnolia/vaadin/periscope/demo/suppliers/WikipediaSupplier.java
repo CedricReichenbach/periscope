@@ -19,12 +19,11 @@ import com.vaadin.ui.UI;
 
 import elemental.json.Json;
 import elemental.json.JsonObject;
-import elemental.json.impl.JreJsonObject;
 
 public class WikipediaSupplier implements AsyncResultSupplier {
 
     private static final String API_BASE_URL = "https://en.wikipedia.org/w/api.php";
-    private static final String API_URL_TEMPLATE = API_BASE_URL + "?format=json&action=query&titles=%s";
+    private static final String API_URL_TEMPLATE = API_BASE_URL + "?format=json&action=query&titles=%s&redirects";
 
     private static final String PAGE_URL_TEMPLATE = "https://en.wikipedia.org/?curid=%s";
 
@@ -37,10 +36,14 @@ public class WikipediaSupplier implements AsyncResultSupplier {
     public CompletableFuture<List<Result>> search(final String query) {
         final String cleanedQuery = query.toLowerCase().replaceFirst("^wikipedia ", "");
 
-        return CompletableFuture.supplyAsync(() -> findWikipediaPages(query));
+        return CompletableFuture.supplyAsync(() -> findWikipediaPages(cleanedQuery));
     }
 
     private List<Result> findWikipediaPages(String query) {
+        if (query.isEmpty()) {
+            return Collections.emptyList();
+        }
+
         final Client client = ClientBuilder.newClient();
         try {
             final WebTarget target = client.target(String.format(API_URL_TEMPLATE, URLEncoder.encode(query, "UTF-8")));
@@ -63,7 +66,7 @@ public class WikipediaSupplier implements AsyncResultSupplier {
             }
 
             final JsonObject pageNode = pagesNode.get(id);
-            final String pageUrl = String.format(PAGE_URL_TEMPLATE, pageNode.getNumber("pageid"));
+            final String pageUrl = String.format(PAGE_URL_TEMPLATE, id);
             results.add(new Result(pageNode.getString("title"), () -> openInNewTab(pageUrl)));
         }
 

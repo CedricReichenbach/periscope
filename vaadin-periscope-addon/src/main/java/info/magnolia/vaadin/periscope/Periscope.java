@@ -104,7 +104,7 @@ public class Periscope extends VerticalLayout {
         this.addComponent(createSpeechButton());
     }
 
-    private void consumeQuery(final String query, final boolean autoExecuteFirst) {
+    private synchronized void consumeQuery(final String query, final boolean autoExecuteFirst) {
         // FIXME: Properly use push instead
         getUI().setPollInterval(500);
 

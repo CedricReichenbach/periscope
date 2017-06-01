@@ -1,16 +1,12 @@
 @import "../valo/valo.scss";
 @import "../periscope-base/periscope-base.scss";
 
-$gray: #d1d1cf;
-$green: #40b527;
-$darkgreen: darken($green, 30%);
-
 // Prefix all selectors in your theme with .demo
 .demo {
   @include valo;
   @include periscope-base;
 
-  background-color: $gray;
+  background-color: whitesmoke;
 
   .demoContentLayout {
     padding: 100px;

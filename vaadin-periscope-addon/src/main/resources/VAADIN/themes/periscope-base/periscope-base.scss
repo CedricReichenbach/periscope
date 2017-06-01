@@ -1,20 +1,18 @@
+@keyframes shift {
+  from {
+    left: -100%;
+  }
+  to {
+    left: 0;
+  }
+}
+
 @mixin periscope-base {
   $light-gray: #ddd;
   $middle-gray: #bbb;
   $dark-gray: #666;
   $light-blue: #cef;
-
-  @keyframes pulsate {
-    from {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
+  $lighter-blue: lighten($light-blue, 5%);
 
   .periscope {
     .search-field {
@@ -33,9 +31,12 @@
       width: 100%;
       background-color: white;
 
-      &.selected,
-      &:hover {
+      &.selected {
         background-color: $light-blue;
+      }
+
+      &:hover {
+        background-color: $lighter-blue;
       }
     }
 
@@ -46,13 +47,17 @@
     .async-loading {
       position: relative;
       display: block;
-      height: 2em;
-      background-color: $middle-gray;
+      height: 1ex;
+      overflow: hidden;
 
       &::after {
-        content: "...";
-        color: $dark-gray;
-        animation: pulsate 1s linear infinite;
+        content: "";
+        background-image: #{"linear-gradient(-70deg"}, $light-blue, transparent, $light-blue, transparent, $light-blue#{")"};
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 200%;
+        animation: shift 2s linear infinite;
       }
     }
   }

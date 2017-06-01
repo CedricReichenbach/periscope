@@ -7,18 +7,36 @@
   }
 }
 
+@keyframes pulsate {
+  from {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 @mixin periscope-base {
   $light-gray: #ddd;
   $lighter-gray: lighten(#ddd, 5%);
-  $middle-gray: #bbb;
+  $medium-gray: #bbb;
   $dark-gray: #666;
   $light-blue: #cef;
   $lighter-blue: lighten($light-blue, 5%);
+  $medium-red: #f54;
+
+  $mic-button-width: 5ex;
 
   .periscope {
+    position: relative;
+
     .search-field {
       width: 100%;
       padding: 1ex;
+      padding-right: 1ex + $mic-button-width;
       box-sizing: border-box;
       border: 1px solid $light-gray;
     }
@@ -63,6 +81,38 @@
         bottom: 0;
         width: 200%;
         animation: shift 2s linear infinite;
+      }
+    }
+
+    .record-button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      padding: 0;
+      width: $mic-button-width;
+      color: $dark-gray;
+
+      &,
+      &:hover,
+      &:focus {
+        &,
+        &::before,
+        &::after {
+          background: none;
+          box-shadow: none;
+          border: none;
+        }
+      }
+
+      &:hover {
+        color: black;
+      }
+
+      &.recording {
+        color: $medium-red;
+        animation: pulsate 1s infinite;
+        cursor: default;
       }
     }
   }

@@ -167,17 +167,30 @@ public class Periscope extends VerticalLayout {
     }
 
     private Component createSpeechButton() {
-        speechRecognizer.addSpeechResultListener(transcript -> {
-            input.setValue(transcript);
-            this.consumeQuery(transcript, true);
-        });
-
         final Button startStopButton = new Button();
         startStopButton.addStyleName("record-button");
         startStopButton.setCaptionAsHtml(true);
         startStopButton.setCaption("<span class=\"ion-mic-a\"></span>");
+
+        final AtomicBoolean isRecording = new AtomicBoolean(false);
+
+        speechRecognizer.addSpeechResultListener(transcript -> {
+            input.setValue(transcript);
+            this.consumeQuery(transcript, true);
+
+            startStopButton.removeStyleName("recording");
+            isRecording.set(false);
+        });
+
         startStopButton.addClickListener((Button.ClickListener) event -> {
+            if (isRecording.get()) {
+                return;
+            }
+
             speechRecognizer.record();
+
+            startStopButton.addStyleName("recording");
+            isRecording.set(true);
         });
 
         return new VerticalLayout(startStopButton, speechRecognizer);

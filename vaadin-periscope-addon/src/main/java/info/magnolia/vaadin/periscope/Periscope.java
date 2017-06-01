@@ -55,6 +55,8 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
+import elemental.events.KeyboardEvent;
+
 /**
  * Periscope Vaadin component, which contains a search bar and shows live results while typing ahead.
  */
@@ -171,6 +173,7 @@ public class Periscope extends VerticalLayout {
         startStopButton.addStyleName("record-button");
         startStopButton.setCaptionAsHtml(true);
         startStopButton.setCaption("<span class=\"ion-mic-a\"></span>");
+        startStopButton.setClickShortcut(ShortcutAction.KeyCode.R, ShortcutAction.ModifierKey.SHIFT, ShortcutAction.ModifierKey.ALT);
 
         final AtomicBoolean isRecording = new AtomicBoolean(false);
 

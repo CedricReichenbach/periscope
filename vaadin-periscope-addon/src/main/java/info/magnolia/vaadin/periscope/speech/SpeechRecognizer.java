@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 import com.vaadin.ui.Component;
 
 public interface SpeechRecognizer extends Component {
+
     void record();
 
     void addSpeechResultListener(Consumer<String> listener);

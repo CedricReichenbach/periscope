@@ -10,10 +10,13 @@ import java.util.function.Consumer;
 
 import com.vaadin.ui.AbstractComponent;
 
+/**
+ * Speech recognition utility which uses google-cloud platform to perform speech -> text.
+ */
 public class GoogleSpeechRecognizer extends AbstractComponent implements SpeechRecognizer {
 
-    final AudioRecorder audioRecorder;
-    final GoogleSpeechRecognitionService googleSpeechRecognitionService;
+    private final AudioRecorder audioRecorder;
+    private final GoogleSpeechRecognitionService googleSpeechRecognitionService;
 
     private final Set<Consumer<String>> listeners = new HashSet<>();
 

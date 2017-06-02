@@ -49,13 +49,13 @@ public class WikipediaSupplier implements AsyncResultSupplier {
             final WebTarget target = client.target(String.format(API_URL_TEMPLATE, URLEncoder.encode(query, "UTF-8")));
             final JsonObject resultJson = Json.parse(target.request(MediaType.APPLICATION_JSON_TYPE).get(String.class));
 
-            return compileResults(resultJson, query);
+            return compileResults(resultJson);
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("UTF-8 is not supported");
         }
     }
 
-    private List<Result> compileResults(final JsonObject resultJson, final String query) {
+    private List<Result> compileResults(final JsonObject resultJson) {
         final JsonObject pagesNode = resultJson.getObject("query").get("pages");
 
         final List<Result> results = new ArrayList<>();

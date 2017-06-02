@@ -196,6 +196,8 @@ public class Periscope extends VerticalLayout {
             isRecording.set(true);
         });
 
-        return new VerticalLayout(startStopButton, speechRecognizer);
+        final VerticalLayout speechWrapper = new VerticalLayout(startStopButton, speechRecognizer);
+        speechWrapper.addStyleName("speech-recognition");
+        return speechWrapper;
     }
 }

@@ -14,6 +14,7 @@ import org.deeplearning4j.nn.api.OptimizationAlgorithm;
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
 import org.deeplearning4j.nn.conf.inputs.InputType;
+import org.deeplearning4j.nn.conf.layers.ConvolutionLayer;
 import org.deeplearning4j.nn.conf.layers.DenseLayer;
 import org.deeplearning4j.nn.conf.layers.OutputLayer;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
@@ -42,24 +43,23 @@ public class ResultNetworkManager {
                 .build();
 
         MultiLayerConfiguration configuration = new NeuralNetConfiguration.Builder()
-                .iterations(1)
-                .regularization(true).l2(1e-4)
+                .regularization(true).l2(1e-5)
                 .weightInit(WeightInit.RELU)
                 .optimizationAlgo(OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT)
-                .activation(Activation.RELU)
-                .learningRate(0.05)
-                .updater(new Nesterovs(0.6))
+                .activation(Activation.TANH)
+                .learningRate(0.02)
+                .updater(new Nesterovs(0.5))
                 .list()
-                .layer(0, new DenseLayer.Builder()
-                        .nIn(INPUT_CHANNELS)
-                        .nOut(5000)
+                .layer(0, new ConvolutionLayer.Builder(3, ASCII_CHARS)
+                        .nIn(1)
+                        .nOut(500)
                         .activation(Activation.IDENTITY)
                         .build())
                 .layer(1, new DenseLayer.Builder()
-                        .nOut(2000)
+                        .nOut(20)
                         .build())
                 .layer(2, outputLayer)
-                .setInputType(InputType.feedForward(INPUT_CHANNELS))
+                .setInputType(InputType.convolutionalFlat(INPUT_DIGITS, ASCII_CHARS, 1))
                 .backprop(true)
                 .pretrain(false)
                 .build();

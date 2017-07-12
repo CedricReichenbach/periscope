@@ -33,6 +33,7 @@
  */
 package info.magnolia.vaadin.periscope;
 
+import info.magnolia.vaadin.periscope.order.ResultNetworkManager;
 import info.magnolia.vaadin.periscope.result.AsyncResultSupplier;
 import info.magnolia.vaadin.periscope.result.Result;
 import info.magnolia.vaadin.periscope.result.ResultSupplier;
@@ -70,6 +71,7 @@ public class Periscope extends VerticalLayout {
     private final TextField input;
     private final ResultList resultList;
     private final SpeechRecognizer speechRecognizer;
+    private final ResultNetworkManager resultsNetworkManager;
 
     public Periscope(final Collection<ResultSupplier> resultSuppliers, final Collection<AsyncResultSupplier> asyncResultSuppliers) {
         this(resultSuppliers, asyncResultSuppliers, new BrowserSpeechRecognizer());
@@ -81,6 +83,7 @@ public class Periscope extends VerticalLayout {
         this.resultSuppliers = resultSuppliers;
         this.asyncResultSuppliers = asyncResultSuppliers;
         this.speechRecognizer = speechRecognizer;
+        this.resultsNetworkManager = new ResultNetworkManager();
 
         this.addStyleName("periscope");
 
@@ -99,7 +102,10 @@ public class Periscope extends VerticalLayout {
         input.addShortcutListener(createInputShortcut(ShortcutAction.KeyCode.ARROW_UP, () -> resultList.moveSelector(-1)));
         input.addShortcutListener(createInputShortcut(ShortcutAction.KeyCode.ENTER, () -> {
             final Optional<Result> selectedOrFirstResult = resultList.getSelectedOrFirstResult();
-            selectedOrFirstResult.ifPresent(result -> result.getAction().run());
+            selectedOrFirstResult.ifPresent(result -> {
+                resultsNetworkManager.train(input.getValue(), result);
+                result.getAction().run();
+            });
 
             // TODO: Find a way to blur input (remove focus)
         }));
@@ -119,6 +125,9 @@ public class Periscope extends VerticalLayout {
         for (final ResultSupplier supplier : resultSuppliers) {
             List<Result> results = supplier.search(query);
 
+            resultsNetworkManager.addResults(results);
+            resultsNetworkManager.sort(query, results);
+
             if (autoExecuteFirst && !results.isEmpty()) {
                 results.get(0).getAction().run();
                 return;
@@ -135,6 +144,9 @@ public class Periscope extends VerticalLayout {
             final CompletableFuture<List<Result>> search = supplier.search(query);
             runningAsyncSearches.add(search);
             search.thenAccept(results -> {
+                        resultsNetworkManager.addResults(results);
+                        resultsNetworkManager.sort(query, results);
+
                         resultList.hideLoadingIcon();
                         runningAsyncSearches.remove(search);
 

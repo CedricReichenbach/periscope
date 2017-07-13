@@ -22,6 +22,14 @@ public class WebsiteSupplier implements ResultSupplier {
         websites.put("Magnolia CMS", "http://www.magnolia-cms.com/");
         websites.put("Should I use tables for layout?", "http://shouldiusetablesforlayout.com/");
         websites.put("GitHub", "https://github.com/");
+        websites.put("Hacker News", "https://news.ycombinator.com/");
+        websites.put("Slashdot", "https://slashdot.org/");
+        websites.put("Good Morning Kitten", "http://goodmorningkitten.com/");
+        websites.put("So Pets", "http://www.sopets.com/");
+        websites.put("ipetitions", "https://www.ipetitions.com/");
+        websites.put("Petit Bateau", "https://www.petit-bateau.de/");
+        websites.put("PenInsulin: Insulin pens", "http://peninsulin.com");
+        websites.put("Peninsulas of europe", "https://www.quora.com/What-are-all-of-the-peninsulas-in-Europe");
     }
 
 

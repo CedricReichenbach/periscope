@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import org.apache.commons.lang3.StringUtils;
 import org.deeplearning4j.nn.api.Layer;
 import org.deeplearning4j.nn.api.OptimizationAlgorithm;
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
@@ -48,18 +49,21 @@ public class ResultNetworkManager {
                 .optimizationAlgo(OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT)
                 .activation(Activation.TANH)
                 .learningRate(0.02)
-                .updater(new Nesterovs(0.5))
+                .updater(new Nesterovs(0.4))
                 .list()
-                .layer(0, new ConvolutionLayer.Builder(3, ASCII_CHARS)
+                .layer(0, new ConvolutionLayer.Builder(ASCII_CHARS, 3)
                         .nIn(1)
                         .nOut(500)
                         .activation(Activation.IDENTITY)
                         .build())
                 .layer(1, new DenseLayer.Builder()
-                        .nOut(20)
+                        .nOut(200)
                         .build())
-                .layer(2, outputLayer)
-                .setInputType(InputType.convolutionalFlat(INPUT_DIGITS, ASCII_CHARS, 1))
+                .layer(2, new DenseLayer.Builder()
+                        .nOut(100)
+                        .build())
+                .layer(3, outputLayer)
+                .setInputType(InputType.convolutionalFlat(ASCII_CHARS, INPUT_DIGITS, 1))
                 .backprop(true)
                 .pretrain(false)
                 .build();
@@ -94,11 +98,13 @@ public class ResultNetworkManager {
      * corresponding ascii code position is 1 and everything else 0.
      */
     private INDArray inputToArray(String query) {
+        final String asciiQuery = StringUtils.stripAccents(query);
+
         float[] chars = new float[INPUT_CHANNELS];
         IntStream.range(0, INPUT_DIGITS).forEach(i -> {
-            if (query.length() <= i) return;
+            if (asciiQuery.length() <= i) return;
 
-            final int asciiCode = query.charAt(i);
+            final int asciiCode = asciiQuery.charAt(i) % ASCII_CHARS;
             chars[i * ASCII_CHARS + asciiCode] = 1;
         });
         return new NDArray(chars);

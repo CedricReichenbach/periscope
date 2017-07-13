@@ -3,14 +3,12 @@ package info.magnolia.vaadin.periscope.order;
 import info.magnolia.vaadin.periscope.result.Result;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.IntStream;
 
 import org.apache.commons.lang3.StringUtils;
-import org.deeplearning4j.nn.api.Layer;
 import org.deeplearning4j.nn.api.OptimizationAlgorithm;
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
@@ -25,7 +23,7 @@ import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.cpu.nativecpu.NDArray;
 import org.nd4j.linalg.learning.config.Nesterovs;
 
-public class ResultNetworkManager {
+public class NeuralNetworkManager {
 
     private final MultiLayerNetwork network;
 
@@ -33,11 +31,11 @@ public class ResultNetworkManager {
     private static final int INPUT_DIGITS = 20;
     private static final int INPUT_CHANNELS = INPUT_DIGITS * ASCII_CHARS;
 
-    final OutputLayer outputLayer;
-    private List<String> resultIds = new ArrayList<>();
+    private final OutputLayer outputLayer;
+    private final List<String> resultIds = new ArrayList<>();
 
-    public ResultNetworkManager() {
-        outputLayer = new OutputLayer.Builder()
+    public NeuralNetworkManager() {
+        this.outputLayer = new OutputLayer.Builder()
                 // FIXME: Do this dynamically
                 .nOut(1000)
                 .activation(Activation.SOFTMAX)
@@ -67,6 +65,7 @@ public class ResultNetworkManager {
                 .backprop(true)
                 .pretrain(false)
                 .build();
+
         this.network = new MultiLayerNetwork(configuration);
         this.network.init();
     }
@@ -83,14 +82,23 @@ public class ResultNetworkManager {
 //        network.init();
     }
 
+    /**
+     * Provide data to neural network.
+     * @param query which query was used to generate the result.
+     * @param result is what user had selected with the given query.
+     */
     public void train(String query, Result result) {
         this.network.fit(inputToArray(query), outputToArray(result.getId()));
     }
 
+    /**
+     * Sorts the results based on the query of the user.
+     * Takes into account what neural network is suggesting and does ordering according to.
+     */
     public void sort(String query, List<Result> results) {
         INDArray resultArray = this.network.output(inputToArray(query));
         List<String> sortedIds = outputArrayToResults(resultArray);
-        results.sort((a, b) -> sortedIds.indexOf(a.getId()) - sortedIds.indexOf(b.getId()));
+        results.sort(Comparator.comparingInt(a -> sortedIds.indexOf(a.getId())));
     }
 
     /**

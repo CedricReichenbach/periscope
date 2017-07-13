@@ -33,7 +33,7 @@
  */
 package info.magnolia.vaadin.periscope;
 
-import info.magnolia.vaadin.periscope.order.ResultNetworkManager;
+import info.magnolia.vaadin.periscope.order.NeuralNetworkManager;
 import info.magnolia.vaadin.periscope.result.AsyncResultSupplier;
 import info.magnolia.vaadin.periscope.result.Result;
 import info.magnolia.vaadin.periscope.result.ResultSupplier;
@@ -56,8 +56,6 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
-import elemental.events.KeyboardEvent;
-
 /**
  * Periscope Vaadin component, which contains a search bar and shows live results while typing ahead.
  */
@@ -71,7 +69,7 @@ public class Periscope extends VerticalLayout {
     private final TextField input;
     private final ResultList resultList;
     private final SpeechRecognizer speechRecognizer;
-    private final ResultNetworkManager resultsNetworkManager;
+    private final NeuralNetworkManager resultsNetworkManager;
 
     public Periscope(final Collection<ResultSupplier> resultSuppliers, final Collection<AsyncResultSupplier> asyncResultSuppliers) {
         this(resultSuppliers, asyncResultSuppliers, new BrowserSpeechRecognizer());
@@ -83,7 +81,7 @@ public class Periscope extends VerticalLayout {
         this.resultSuppliers = resultSuppliers;
         this.asyncResultSuppliers = asyncResultSuppliers;
         this.speechRecognizer = speechRecognizer;
-        this.resultsNetworkManager = new ResultNetworkManager();
+        this.resultsNetworkManager = new NeuralNetworkManager();
 
         this.addStyleName("periscope");
 

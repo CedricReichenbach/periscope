@@ -36,6 +36,7 @@ package info.magnolia.vaadin.periscope;
 import info.magnolia.vaadin.periscope.result.AsyncResultSupplier;
 import info.magnolia.vaadin.periscope.result.Result;
 import info.magnolia.vaadin.periscope.result.ResultSupplier;
+import info.magnolia.vaadin.periscope.result.SearchFailedException;
 import info.magnolia.vaadin.periscope.speech.BrowserSpeechRecognizer;
 import info.magnolia.vaadin.periscope.speech.SpeechRecognizer;
 
@@ -46,6 +47,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.google.common.collect.Lists;
 import com.vaadin.annotations.StyleSheet;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.event.ShortcutListener;
@@ -54,8 +56,6 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-
-import elemental.events.KeyboardEvent;
 
 /**
  * Periscope Vaadin component, which contains a search bar and shows live results while typing ahead.
@@ -99,7 +99,11 @@ public class Periscope extends VerticalLayout {
         input.addShortcutListener(createInputShortcut(ShortcutAction.KeyCode.ARROW_UP, () -> resultList.moveSelector(-1)));
         input.addShortcutListener(createInputShortcut(ShortcutAction.KeyCode.ENTER, () -> {
             final Optional<Result> selectedOrFirstResult = resultList.getSelectedOrFirstResult();
-            selectedOrFirstResult.ifPresent(result -> result.getAction().run());
+            try {
+                selectedOrFirstResult.ifPresent(result -> result.getAction().run());
+            } catch (SearchFailedException e) {
+                changeResultListToReflectException();
+            }
 
             // TODO: Find a way to blur input (remove focus)
         }));
@@ -120,7 +124,14 @@ public class Periscope extends VerticalLayout {
             List<Result> results = supplier.search(query);
 
             if (autoExecuteFirst && !results.isEmpty()) {
-                results.get(0).getAction().run();
+                // typically a case of vocal command
+                try {
+                    results.get(0).getAction().run();
+                }
+                // TODO: shall be lesser scoped.
+                catch (Exception e) {
+                    changeResultListToReflectException();
+                }
                 return;
             }
 
@@ -143,7 +154,14 @@ public class Periscope extends VerticalLayout {
                         }
 
                         if (autoExecuteFirst && !results.isEmpty()) {
-                            results.get(0).getAction().run();
+                            // typically a case of vocal command
+                            try {
+                                results.get(0).getAction().run();
+                            }
+                            // TODO: shall be lesser scoped.
+                            catch (Exception e) {
+                                changeResultListToReflectException();
+                            }
                             autoExecuteDone.set(true);
                             return;
                         }
@@ -153,6 +171,13 @@ public class Periscope extends VerticalLayout {
                     }
             );
         });
+    }
+
+    private void changeResultListToReflectException() {
+        resultList.clear();
+        // TODO: Have to be more specific e.g. red etc.
+        resultList.appendResults("Command result", Lists.newArrayList(new Result("Voice Command failed.", () -> {
+        })));
     }
 
     private ShortcutListener createInputShortcut(final int key, final Runnable action) {

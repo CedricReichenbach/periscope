@@ -34,11 +34,24 @@
 package info.magnolia.vaadin.periscope.result;
 
 /**
- * Generic supplier of periscope results.
- * @param <T> Type of result(s) provided
+ * //TODO write here something nicer.
  */
-public interface PeriscopeSupplier<T> {
-    String getTitle();
+public class SearchFailedException extends RuntimeException {
 
-    T search(String query) throws SearchFailedException;
+    private final String query;
+    private final Throwable e;
+
+    public SearchFailedException(String query, Throwable e) {
+        this.query = query;
+        this.e = e;
+    }
+
+    @Override
+    public synchronized Throwable getCause() {
+        return e.getCause();
+    }
+
+    public String getQuery() {
+        return query;
+    }
 }

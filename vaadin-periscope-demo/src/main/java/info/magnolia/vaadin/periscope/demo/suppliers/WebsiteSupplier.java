@@ -2,6 +2,7 @@ package info.magnolia.vaadin.periscope.demo.suppliers;
 
 import info.magnolia.vaadin.periscope.result.Result;
 import info.magnolia.vaadin.periscope.result.ResultSupplier;
+import info.magnolia.vaadin.periscope.result.SearchFailedException;
 import info.magnolia.vaadin.periscope.result.SupplierUtil;
 
 import java.util.HashMap;
@@ -31,7 +32,7 @@ public class WebsiteSupplier implements ResultSupplier {
     }
 
     @Override
-    public List<Result> search(final String query) {
+    public List<Result> search(final String query) throws SearchFailedException {
         return websites.entrySet().stream()
                 .filter(entry -> entry.getKey().toLowerCase().contains(query.toLowerCase()))
                 .map(entry -> new Result(SupplierUtil.highlight(entry.getKey(), query), () -> openInNewTab(entry.getValue())))

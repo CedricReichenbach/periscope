@@ -2,6 +2,7 @@ package info.magnolia.vaadin.periscope.demo.suppliers;
 
 import info.magnolia.vaadin.periscope.result.AsyncResultSupplier;
 import info.magnolia.vaadin.periscope.result.Result;
+import info.magnolia.vaadin.periscope.result.SearchFailedException;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -33,7 +34,7 @@ public class WikipediaSupplier implements AsyncResultSupplier {
     }
 
     @Override
-    public CompletableFuture<List<Result>> search(final String query) {
+    public CompletableFuture<List<Result>> search(final String query) throws SearchFailedException {
         final String cleanedQuery = query.toLowerCase().replaceFirst("^wikipedia ", "");
 
         return CompletableFuture.supplyAsync(() -> findWikipediaPages(cleanedQuery));

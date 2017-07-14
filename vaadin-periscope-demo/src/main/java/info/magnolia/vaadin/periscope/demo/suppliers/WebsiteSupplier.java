@@ -30,6 +30,9 @@ public class WebsiteSupplier implements ResultSupplier {
         websites.put("Petit Bateau", "https://www.petit-bateau.de/");
         websites.put("PenInsulin: Insulin pens", "http://peninsulin.com");
         websites.put("Peninsulas of europe", "https://www.quora.com/What-are-all-of-the-peninsulas-in-Europe");
+        websites.put("Cargold collection", "http://www.cargold-collection.com/");
+        websites.put("SBB Cargo", "http://www.sbbcargo.com/");
+        websites.put("Cargo Domizil", "http://www.cargodomizil.ch/");
     }
 
 

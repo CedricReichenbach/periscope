@@ -34,6 +34,7 @@ public class WebsiteSupplier implements ResultSupplier {
         websites.put("Cargold collection", "http://www.cargold-collection.com/");
         websites.put("SBB Cargo", "http://www.sbbcargo.com/");
         websites.put("Cargo Domizil", "http://www.cargodomizil.ch/");
+        websites.put("Graphel Carbon Products", "http://graphel.com/");
     }
 
 

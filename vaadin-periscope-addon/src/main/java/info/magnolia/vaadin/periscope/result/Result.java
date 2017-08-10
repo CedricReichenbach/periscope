@@ -35,6 +35,10 @@ package info.magnolia.vaadin.periscope.result;
 
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
+
 /**
  * Periscope result containing a text, an action and optionally an icon.
  */
@@ -43,15 +47,21 @@ public class Result {
     private final String htmlText;
     private final Runnable action;
     private final String icon;
+    private final String id;
 
     public Result(String htmlText, final Runnable action) {
-        this(htmlText, action, null);
+        this(htmlText, action, Jsoup.clean(htmlText, Whitelist.none()), null);
     }
 
-    public Result(String htmlText, Runnable action, String icon) {
+    public Result(String htmlText, final Runnable action, String id) {
+        this(htmlText, action, id, null);
+    }
+
+    public Result(String htmlText, Runnable action, String id, String icon) {
         this.htmlText = htmlText;
         this.action = action;
         this.icon = icon;
+        this.id = id;
     }
 
     public String getHtmlText() {
@@ -64,5 +74,9 @@ public class Result {
 
     public Runnable getAction() {
         return action;
+    }
+
+    public String getId() {
+        return id;
     }
 }

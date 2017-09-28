@@ -35,6 +35,8 @@ public class WebsiteSupplier implements ResultSupplier {
         websites.put("SBB Cargo", "http://www.sbbcargo.com/");
         websites.put("Cargo Domizil", "http://www.cargodomizil.ch/");
         websites.put("Graphel Carbon Products", "http://graphel.com/");
+        websites.put("1CarGames", "http://www.1cargames.com/");
+        websites.put("Ebay Cars", "https://www.ebay.com/motors");
     }
 
 

@@ -37,6 +37,7 @@ public class WebsiteSupplier implements ResultSupplier {
         websites.put("Graphel Carbon Products", "http://graphel.com/");
         websites.put("1CarGames", "http://www.1cargames.com/");
         websites.put("Ebay Cars", "https://www.ebay.com/motors");
+        websites.put("Carnival Cruise Line", "https://www.carnival.com/");
     }
 
 

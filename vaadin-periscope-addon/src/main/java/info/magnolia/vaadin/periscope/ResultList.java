@@ -36,14 +36,17 @@ package info.magnolia.vaadin.periscope;
 
 import info.magnolia.vaadin.periscope.result.Result;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.stream.StreamSupport;
 
 import javax.inject.Inject;
 
+import com.vaadin.event.LayoutEvents;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
@@ -59,6 +62,8 @@ public class ResultList {
     private final Component loadingIcon;
 
     private final Map<Component, Result> results = new HashMap<>();
+
+    private final List<Consumer<Result>> resultPickCallbacks = new ArrayList<>();
 
     private int selectorPosition = -1;
 
@@ -144,6 +149,9 @@ public class ResultList {
         final HorizontalLayout entry = new HorizontalLayout(icon, text);
         entry.setStyleName("result-entry");
         results.put(entry, result);
+        entry.addLayoutClickListener((LayoutEvents.LayoutClickListener) event -> {
+            resultPickCallbacks.forEach(pickCallback -> pickCallback.accept(result));
+        });
         return entry;
     }
 
@@ -158,5 +166,9 @@ public class ResultList {
 
     void hideLoadingIcon() {
         layout.removeComponent(loadingIcon);
+    }
+
+    void onResultPick(final Consumer<Result> pickCallback) {
+        this.resultPickCallbacks.add(pickCallback);
     }
 }

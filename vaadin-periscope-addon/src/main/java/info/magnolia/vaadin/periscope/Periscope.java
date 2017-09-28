@@ -103,10 +103,7 @@ public class Periscope extends VerticalLayout {
         input.addShortcutListener(createInputShortcut(ShortcutAction.KeyCode.ENTER, () -> {
             final Optional<Result> selectedOrFirstResult = resultList.getSelectedOrFirstResult();
             try {
-                selectedOrFirstResult.ifPresent(result -> {
-                    resultsNetworkManager.train(input.getValue(), result);
-                    result.getAction().run();
-                });
+                selectedOrFirstResult.ifPresent(this::resultPicked);
             } catch (SearchFailedException e) {
                 changeResultListToReflectException();
             }
@@ -115,7 +112,14 @@ public class Periscope extends VerticalLayout {
         }));
         input.addBlurListener(event -> resultList.clearSelector());
 
+        resultList.onResultPick(this::resultPicked);
+
         this.addComponent(createSpeechButton());
+    }
+
+    private void resultPicked(Result result) {
+        resultsNetworkManager.train(input.getValue(), result);
+        result.getAction().run();
     }
 
     private synchronized void consumeQuery(final String query, final boolean autoExecuteFirst) {

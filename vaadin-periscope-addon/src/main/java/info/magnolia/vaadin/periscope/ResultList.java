@@ -47,11 +47,11 @@ import java.util.stream.StreamSupport;
 import javax.inject.Inject;
 
 import com.vaadin.event.LayoutEvents;
-import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.v7.shared.ui.label.ContentMode;
+import com.vaadin.v7.ui.HorizontalLayout;
+import com.vaadin.v7.ui.Label;
+import com.vaadin.v7.ui.VerticalLayout;
 
 /**
  * Manager for periscope results, internally maintaining a Vaadin component.
@@ -70,7 +70,6 @@ public class ResultList {
     @Inject
     public ResultList() {
         layout = new VerticalLayout();
-        layout.setImmediate(true);
         layout.addStyleName("result-list");
 
         loadingIcon = new Label();

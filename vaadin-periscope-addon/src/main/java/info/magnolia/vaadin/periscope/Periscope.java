@@ -52,11 +52,11 @@ import com.google.common.collect.Lists;
 import com.vaadin.annotations.StyleSheet;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.event.ShortcutListener;
-import com.vaadin.ui.AbstractTextField;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.v7.ui.AbstractTextField;
+import com.vaadin.v7.ui.TextField;
+import com.vaadin.v7.ui.VerticalLayout;
 
 /**
  * Periscope Vaadin component, which contains a search bar and shows live results while typing ahead.

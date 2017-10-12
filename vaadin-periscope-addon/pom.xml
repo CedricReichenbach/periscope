@@ -16,8 +16,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <vaadin.version>7.7.7</vaadin.version>
-    <vaadin.plugin.version>7.7.7</vaadin.plugin.version>
+    <vaadin.version>8.1.5</vaadin.version>
+    <vaadin.plugin.version>8.1.5</vaadin.plugin.version>
     <dl4jVersion>0.9.1</dl4jVersion>
 
     <!-- ZIP Manifest fields -->
@@ -67,6 +67,11 @@
     <dependency>
       <groupId>com.vaadin</groupId>
       <artifactId>vaadin-server</artifactId>
+      <version>${vaadin.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.vaadin</groupId>
+      <artifactId>vaadin-compatibility-server</artifactId>
       <version>${vaadin.version}</version>
     </dependency>
     <dependency>

@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
+import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.Alignment;
@@ -19,6 +20,7 @@ import com.vaadin.v7.ui.VerticalLayout;
 
 @Theme("demo")
 @Title("Periscope Add-on Demo")
+@Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
 @SuppressWarnings("serial")
 public class DemoUI extends UI {
 

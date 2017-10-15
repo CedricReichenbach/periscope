@@ -50,6 +50,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.google.common.collect.Lists;
 import com.vaadin.annotations.StyleSheet;
+import com.vaadin.annotations.Widgetset;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.event.ShortcutListener;
 import com.vaadin.ui.Button;
@@ -62,6 +63,7 @@ import com.vaadin.v7.ui.VerticalLayout;
  * Periscope Vaadin component, which contains a search bar and shows live results while typing ahead.
  */
 @StyleSheet("vaadin://addons/periscope/css/ionicons.min.css")
+@Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
 public class Periscope extends VerticalLayout {
 
     private final Collection<ResultSupplier> resultSuppliers;

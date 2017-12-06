@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <groupId>info.magnolia</groupId>
+    <artifactId>vaadin-periscope-root</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
   <modelVersion>4.0.0</modelVersion>
   <groupId>info.magnolia</groupId>
   <artifactId>vaadin-periscope-demo</artifactId>
@@ -17,7 +23,6 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <vaadin.version>8.1.5</vaadin.version>
-    <vaadin.plugin.version>8.1.5</vaadin.plugin.version>
     <jetty.plugin.version>9.3.9.v20160517</jetty.plugin.version>
     <resteasyVersion>3.0.19.Final</resteasyVersion>
   </properties>
@@ -69,6 +74,21 @@
   </dependencyManagement>
 
   <dependencies>
+    <dependency>
+      <groupId>info.magnolia.publishing</groupId>
+      <artifactId>magnolia-publishing-app</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>info.magnolia.publishing</groupId>
+      <artifactId>magnolia-publishing-core</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>info.magnolia.definitions</groupId>
+      <artifactId>magnolia-definitions-app</artifactId>
+      <version>1.1</version>
+    </dependency>
     <dependency>
       <groupId>info.magnolia</groupId>
       <artifactId>vaadin-periscope</artifactId>

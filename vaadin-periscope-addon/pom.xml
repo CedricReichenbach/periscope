@@ -108,6 +108,12 @@
       <groupId>org.deeplearning4j</groupId>
       <artifactId>deeplearning4j-core</artifactId>
       <version>${dl4jVersion}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.datavec</groupId>
+          <artifactId>datavec-data-image</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.nd4j</groupId>
